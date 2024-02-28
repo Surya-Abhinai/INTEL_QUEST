@@ -1,14 +1,44 @@
-from qdrant_client import QdrantClient
-from sentence_transformers import SentenceTransformer
-from Extract_User import TextExtractor
+from flask import Flask, render_template, request, send_file, url_for, redirect
+from output import Output
+import os
+from io import StringIO
+import pickle
+from io import BytesIO
 
-client = QdrantClient(path="Qdrant_db")
-encoder = SentenceTransformer("all-MiniLM-L6-v2")
+app = Flask(__name__)
+app.config['ALLOWED_EXTENSIONS'] = {'csv', 'xlsx', 'pdf', 'docx'}
+app.config['UPLOAD_FOLDER'] = 'upload'
 
-script = TextExtractor("Framework_for_Bank_Loan_Re-Payment_Prediction_and_Income_Prediction.pdf").text
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-val = len(script)
-for i in range(int(val/100)):
-    query_embedding = encoder.encode(script[i*100:(i+1)*100])
-    hits = client.search(collection_name="Research_papers", query_vector=query_embedding,limit=1)
-    print(i, [hits[0].score, hits[0].payload['number']])
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return 'No file part'
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return 'No selected file'
+
+    if file:
+        upload_folder = app.config['UPLOAD_FOLDER']
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder)
+        file.save(os.path.join(upload_folder, file.filename))
+
+        output_text,output_score = Output(os.path.join(upload_folder, file.filename)).output
+        print(output_text, output_score)
+
+        return render_template('preview.html', output=output_text)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
