@@ -18,20 +18,8 @@ class Output :
         script = TextExtractor(file_path).text
         return script
 
-
-    def colorize(self,text, color):
-        color_codes = {
-            'red': '\033[31m',
-            'green': '\033[32m',
-            'blue': '\033[34m',
-            'reset': '\033[0m',
-        }
-
-        return f"{color_codes[color]}{text}{color_codes['reset']}"
-
-
     def fn(self,script):
-        final_string = ""
+        final_string = []
         final_score = 0
         split_sentences = script.split(".")
         val = len(split_sentences)
@@ -40,11 +28,10 @@ class Output :
             score = temp.score
             id = temp.number
             final_score += score
-            if score > 0.7:
-                st = self.colorize(i, 'red')
-                final_string += f"{i}., id = {id}\n"
+            if score > 0.5:
+                final_string += [{'text': f"{i}",'id':id, 'present':1}]
             else:
-                final_string += f"{i}.\n"
+                final_string += [{'text': f"{i}",'id':0,'present':0}]
 
         final_score /= val
         final_score *= 100
