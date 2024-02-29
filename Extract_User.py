@@ -38,4 +38,4 @@ class TextExtractor:
         text = ""
         for paragraph in document.paragraphs:
             text += paragraph.text + "\n"
-            return text
+        return text
