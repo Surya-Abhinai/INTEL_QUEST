@@ -80,10 +80,12 @@
     </div>
 </body>
 </html>
-         {% for item in output %}
-            {% if item.present == 1 %}
-                <p style="color: red;">{{ item.id }} - {{ item.text }}</p>
-            {% else %}
-                <p>{{ item.text }}</p>
-            {% endif %}
-        {% endfor %}
+{% for item in output %}
+    {% if item.present == 1 %}
+        <p style="color: red;">{{ item.id }} - {{ item.text }}</p>
+    {% elif item.present == 2 %}
+        <p style="color: blue;">{{ item.id }} - {{ item.text }}</p>
+    {% else %}
+        <p>{{ item.text }}</p>
+    {% endif %}
+{% endfor %}
