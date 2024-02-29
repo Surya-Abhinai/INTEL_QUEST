@@ -29,7 +29,7 @@ Following this , Install the database from the link provided above and add that 
 
 Finally, the flask app can be launched by running the following command in the terminal: 
 ```
-python app.py
+python main.py
 ```
 
 # Project Overview 
