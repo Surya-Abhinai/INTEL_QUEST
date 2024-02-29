@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, send_file, url_for, redirect
 from output import Output
 import os
-from io import StringIO
-import pickle
-from io import BytesIO
 
 app = Flask(__name__)
 app.config['ALLOWED_EXTENSIONS'] = {'csv', 'xlsx', 'pdf', 'docx'}
@@ -35,9 +32,8 @@ def upload_file():
         file.save(os.path.join(upload_folder, file.filename))
 
         output_text,output_score = Output(os.path.join(upload_folder, file.filename)).output
-        print(output_text, output_score)
 
-        return render_template('preview.html', output=output_text)
+        return render_template('preview.html', output=[output_text,output_score])
 
 
 if __name__ == "__main__":
