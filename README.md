@@ -49,3 +49,7 @@ If ```0.5``` ≤ similarity ≤ ```0.65```: Text is colored blue, indicating mod
 If similarity < ```0.5```: Text remains unchanged, as similarity is too low for meaningful comparison.
 
 **Workflow Integration:** Upon file upload, a copy is stored locally. The file path is then sent to the Output class, which retrieves the text. The text is split into sentences, and each sentence is passed to Fetch_Score for similarity score retrieval. Finally, text coloring is applied based on similarity scores, and the result is displayed to the user.
+
+![image](https://github.com/Surya-Abhinai/INTEL_QUEST-Plagiarism-Checker-/assets/124990558/9dd913ee-8da1-4426-a804-5913e734baa2)
+
+![image](https://github.com/Surya-Abhinai/INTEL_QUEST-Plagiarism-Checker-/assets/124990558/be992b30-2265-4f1d-ba02-56aecb1f23a1)
