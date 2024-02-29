@@ -31,3 +31,21 @@ Finally, the flask app can be launched by running the following command in the t
 ```
 python app.py
 ```
+
+# Project Overview 
+
+**Data Extraction (Extract.py):** Metadata and XML content from JSON files are extracted, including title, number, authors, abstract, and main text. HTML tags, equations, and special characters are removed for clean text representation and they are stored in Qdrant vector database collection named "Research_papers" with vector configuration specifying cosine distance and on-disk storage.
+
+**Text Extraction (Extract_User.py):** Upon file upload (PDF/DOCX/TXT), text is automatically extracted for further processing.
+
+**Semantic Search (Search.py):** Utilizes Qdrant and Sentence Transformers to conduct semantic searches on a collection of research papers. Papers are represented as high-dimensional vectors for efficient search.
+
+**Similarity Score Retrieval (Fetch_Score.py):** Encodes input text queries and searches the Qdrant collection for similar papers. Retrieves similarity scores and corresponding paper numbers.
+
+**Text Chunking and Coloring:** Uploaded text is split into chunks of lines. Each line is compared against the Qdrant database, and based on similarity scores:
+
+If similarity > ```0.65```: Text is colored red, indicating high similarity, and displays the similar paper ID.
+If ```0.5``` ≤ similarity ≤ ```0.65```: Text is colored blue, indicating moderate similarity, and displays the similar paper ID.
+If similarity < ```0.5```: Text remains unchanged, as similarity is too low for meaningful comparison.
+
+**Workflow Integration:** Upon file upload, a copy is stored locally. The file path is then sent to the Output class, which retrieves the text. The text is split into sentences, and each sentence is passed to Fetch_Score for similarity score retrieval. Finally, text coloring is applied based on similarity scores, and the result is displayed to the user.
