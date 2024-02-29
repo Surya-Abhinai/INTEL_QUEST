@@ -7,10 +7,14 @@ class TextExtractor:
         self.path = path
         self.format = self.predict_format(path)
         self.text = ""
-        if self.format:
+        if self.format == 1:
             self.text = self.extract_text_from_pdf()
-        else:
+        elif self.format == 0:
             self.text = self.extract_text_from_docx()
+        else:
+            with open(path, "r") as file:
+                text = file.read()
+            self.text = text
 
     def predict_format(self, path):
         if path.endswith(".pdf"):
